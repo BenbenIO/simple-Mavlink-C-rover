@@ -1,25 +1,28 @@
 # Simple Mavlink C++ example: Rover
-<br>Mavlink (Micro Air Vehicle Link) is a protocol for unmanned vehicle (drone / rover). It is used to communicat with the mobile from the ground control station or compagnion computer. This repository aimes to provide an easy explanation on Mavlink, how to communicat with a Pixhawk and link useful ressources. </br>
-<br>The proposed code is used to control a small rover equiped with Pixhawk2 from a compagnion computer (Raspberry3) in C++ using mavlink v2.</br>
-<br>Finally, if your project can be done in python, I recommand using the [dronekit](http://python.dronekit.io/guide/quick_start.html) library, which is very complet and easy to use, you can still use the ressources to get a better understanding of mavlink protocol.</br>
+<br>Mavlink (Micro Air Vehicle Link) is a protocol for unmanned vehicle (drone / rover). It is used to communication with the mobile from the ground control station or companion computer. This repository aims to provide an easy explanation on Mavlink, how to communication with a Pixhawk and link useful resources. </br>
+<br>The proposed code is used to control a small rover equiped with Pixhawk2 from a companion computer (Raspberry3) in C++ using mavlink v2.</br>
+<br>Finally, if your project can be done in python, I recommend using the [dronekit](http://python.dronekit.io/guide/quick_start.html) library, which is very complet and easy to use, you can still use the resources to get a better understanding of mavlink protocol.</br>
 
 <br>The first experience with Mavlink - Ardupiplot - Mission planner can be difficult but I hope this documents will help you. __If you see any mistake or want to help please feel free to push any change.__</br>
 
 # Mavlink
 ## Architecture
+
 <p align="center">
-  <img src="/images/structure.PNG" width="300">
+  <img src="/images/structure.PNG" width="500">
 </p>
+
 ## Packet structure
+
 <p align="center">
-  <img src="/images/packet.PNG" width="300">
+  <img src="/images/packet.png" width="400">
 </p>
 
 * __STX__: Packet start sequence
-* __LEN__: Payload lenght ( 0 - 255)
-* __SEQ__: sequence number for each composent to detect packet loss
+* __LEN__: Payload length ( 0 - 255)
+* __SEQ__: sequence number for each component to detect packet loss
 * __SYS__: System ID. The system ID is of the SENDING system. 
-* __COMP__: Component ID. The Component ID is the identifyer of the message target inside the autopilot. I only used 1 component, but if you had component to your pixhawk (Gimbal - ToF sensor) you can specify the target. COMP = 0 for broadcast in the autopilot.
+* __COMP__: Component ID. The Component ID is the identifier of the message target inside the autopilot. I only used 1 component, but if you had component to your pixhawk (Gimbal - ToF sensor) you can specify the target. COMP = 0 for broadcast in the autopilot.
 * __MSG__: Message - command ID. Mavlink assigns an unique ID for a command ([list](https://mavlink.io/en/messages/common.html)) 
 * __PAYLOAD__: size depends on the specific commands and number of parameters
 * __CKA - CKB__: check sum
@@ -27,12 +30,12 @@
 ## Program structure
 If you want to design your own mavlink message communication program, you will need to ensure the following step:
 1. Ensure connectivity with the vehicle: UART - UDP - TCP
-2. Recieve data from the vehicle: 
+2. Receive data from the vehicle: 
     1. Parse incoming data: _mavlink_parse_char_ byte-to-byte basis
     2. Handling the message: _mavlink_decode_ decode message based on the message ID
-    3. Example: 1) heartbeat to get all setting information 2) Other resquested data
+    3. Example: 1) heartbeat to get all setting information 2) Other requested data
 3. Send data to vehicle
-    1. Format a new mavlink message structure with target id / command id / paremeters...
+    1. Format a new mavlink message structure with target id / command id / parameters...
     2. Pack and write the message to the communication port: _mavlink_finalize_message_ 
 
 # Mavlink message in C++
@@ -65,7 +68,7 @@ int main()
 
 ```
 ## Used function
-I recommand to search on both Ardupilot - Mavlink command list to make sure the message is supported by ardupilot, that there is no format change and for a better understanding of the message. For example:
+I recommend to search on both Ardupilot - Mavlink command list to make sure the message is supported by ardupilot, that there is no format change and for a better understanding of the message. For example:
 #### List
 * https://github.com/ArduPilot/ardupilot/blob/master/APMrover2/Rover.h
 * https://github.com/mavlink/c_library_v2/blob/master/common/common.h
@@ -78,11 +81,11 @@ I recommand to search on both Ardupilot - Mavlink command list to make sure the 
 * http://ardupilot.org/rover/docs/guided-mode.html?highlight=mav_cmd_nav_set_yaw_speed
 
 ## Currently working on
-* Multithread for reciving-sending
-* Generate local way point
-* Battery monitoring message
+- [ ] Multi-thread for receiving-sending
+- [ ] Generate local way point
+- [ ] Battery monitoring message
 
-# Ressouces 
+# Resouces 
 #### Mavlink for dummy
 * https://diydrones.com/forum/topics/mavlink-tutorial-for-absolute-dummies-part-i?groupUrl=arducopterusergroup&groupId=705844%3AGroup%3A394475&id=705844%3ATopic%3A1472930&page=3#comments
 * http://ardupilot.org/dev/docs/mavlink-basics.html
